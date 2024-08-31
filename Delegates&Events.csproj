@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollectionExt.cs" />
+    <Compile Include="FileArgs.cs" />
     <Compile Include="FileSearcher.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

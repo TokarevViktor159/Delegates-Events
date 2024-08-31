@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 
 namespace Delegates_Events
 {
@@ -8,12 +8,18 @@ namespace Delegates_Events
         static void Main(string[] args)
         {
             Console.WriteLine("Пример сообщений, возникающих при срабатывании событий:");
-            FileSearcher FS = new FileSearcher();
-            FS.FileFound += FS_FileFound;
+            FileSearcher fileSearcher = new FileSearcher();
+            fileSearcher.FileFound += (sender, e) =>
+                {
+                    //условие, когда сработает отмена.
+                    if (e.Name == "C:\\Windows\\win.ini")
+                        fileSearcher.Cancel = true;
+                    Console.WriteLine($"Найден файл: {e.Name}");
+                };
 
             try
             {
-                FS.Search(@"C:\Windows");
+                fileSearcher.Search(@"C:\Windows");
             }
             catch (Exception ex)
             {
@@ -22,28 +28,13 @@ namespace Delegates_Events
 
             Console.WriteLine();
             Console.WriteLine("Пример поиска максимального элемента:");
-            List<Test> tests = new List<Test>()
-            {
-                new Test() { Value = 1.5f },
-                new Test() { Value = 2.5f },
-                new Test() { Value = 3.5f },
-                new Test() { Value = 0.5f }
-            };
-            Test max_item = tests.GetMax(f => f.Value);
-            Console.WriteLine($"Max значение: {max_item?.Value}");
+            DirectoryInfo directory = new DirectoryInfo(@"C:\Windows");
+            FileInfo maxFileSize = directory.GetFiles().GetMax(f => f.Length);
+            if (maxFileSize != null)
+                Console.WriteLine($"Наибольший файл {maxFileSize.FullName} размером {maxFileSize?.Length} байт.");
             Console.WriteLine();
             Console.WriteLine("Нажмите любую клавишу...");
             Console.ReadKey();
-        }
-
-        private static void FS_FileFound(object sender, FileArgs e)
-        {
-            Console.WriteLine($"Найден файл: {e.Name}");
-        }
-
-        public class Test
-        {
-            public float Value { get; set; }
         }
     }
 }

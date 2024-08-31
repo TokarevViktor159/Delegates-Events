@@ -11,20 +11,20 @@ namespace Delegates_Events
             if (collection == null) throw new ArgumentNullException("Collection is null");
             if (!collection.Any()) throw new ArgumentException("Collection is empty");
 
-            T max_item = collection.First();
-            float max_value = convertToNumber(max_item);
+            T maxItem = collection.First();
+            float maxValue = convertToNumber(maxItem);
 
-            float cur_value;
+            float curValue;
             foreach (T item in collection)
             {
-                cur_value = convertToNumber(item);
-                if (cur_value > max_value)
+                curValue = convertToNumber(item);
+                if (curValue > maxValue)
                 {
-                    max_value = cur_value;
-                    max_item = item;
+                    maxValue = curValue;
+                    maxItem = item;
                 }
             }
-            return max_item;
+            return maxItem;
         }
     }
 }
